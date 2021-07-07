@@ -104,16 +104,31 @@ namespace Streamish.Repositories
                     var reader = cmd.ExecuteReader();
 
                     UserProfile userProfile = null;
-                    if (reader.Read())
+                    while (reader.Read())
                     {
+                        if (userProfile == null)
                         userProfile = new UserProfile()
                         {
                             Id = id,
-                            Name = DbUtils.GetString(reader, "Name"),
+                            Name = DbUtils.GetString(reader, "UserName"),
                             Email = DbUtils.GetString(reader, "Email"),
                             ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
-                            DateCreated = DbUtils.GetDateTime(reader, "DateCreated"),
+                            DateCreated = DbUtils.GetDateTime(reader, "UserDateCreated"),
+                            Videos = new List<Video>()
                         };
+
+                        if (DbUtils.IsNotDbNull(reader, "VideoId"))
+                        {
+                            userProfile.Videos.Add(new Video()
+                            {
+                                Id = DbUtils.GetInt(reader, "VideoId"),
+                                Title = DbUtils.GetString(reader, "Title"),
+                                Description = DbUtils.GetString(reader, "Description"),
+                                Url = DbUtils.GetString(reader, "Url"),
+                                DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
+                                UserProfileId = DbUtils.GetInt(reader, "UserProfileId")
+                            });
+                        }
                     }
 
                     reader.Close();
