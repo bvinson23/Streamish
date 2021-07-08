@@ -122,6 +122,39 @@ namespace Streamish.Tests
             Assert.IsType<BadRequestResult>(result);
         }
 
+        [Fact]
+        public void Put_Method_Updates_A_Video()
+        {
+            // Arrange
+            var testUserProfileId = 99;
+            var userProfiles = CreateTestUserProfiles(5);
+            userProfiles[0].Id = testUserProfileId; // Make sure we know the Id of one of the userProfiles
+
+            var repo = new InMemoryUserProfileRepository(userProfiles);
+            var controller = new UserProfileController(repo);
+
+            var userProfileToUpdate = new UserProfile()
+            {
+                Id = testUserProfileId,
+                Name = "Updated!",
+                Email = "Updated!",
+                ImageUrl = "ImageUrl",
+                DateCreated = DateTime.Today,
+            };
+
+            // Act
+            controller.Put(testUserProfileId, userProfileToUpdate);
+
+            // Assert
+            var userProfileFromDb = repo.InternalData.FirstOrDefault(p => p.Id == testUserProfileId);
+            Assert.NotNull(userProfileFromDb);
+
+            Assert.Equal(userProfileToUpdate.Name, userProfileFromDb.Name);
+            Assert.Equal(userProfileToUpdate.Email, userProfileFromDb.Email);
+            Assert.Equal(userProfileToUpdate.ImageUrl, userProfileFromDb.ImageUrl);
+            Assert.Equal(userProfileToUpdate.DateCreated, userProfileFromDb.DateCreated);
+        }
+
         private List<UserProfile> CreateTestUserProfiles(int count)
         {
             var userProfiles = new List<UserProfile>();
