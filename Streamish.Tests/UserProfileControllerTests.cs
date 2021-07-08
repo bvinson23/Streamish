@@ -69,6 +69,31 @@ namespace Streamish.Tests
             Assert.Equal(testUserProfileId, actualUserProfile.Id);
         }
 
+        [Fact]
+        public void Post_Method_Adds_A_New_UserProfile()
+        {
+            // Arrange
+            var userProfileCount = 5;
+            var userProfiles = CreateTestUserProfiles(userProfileCount);
+
+            var repo = new InMemoryUserProfileRepository(userProfiles);
+            var controller = new UserProfileController(repo);
+
+            // Act
+            var newUserProfile = new UserProfile()
+            {
+                Name = "Name",
+                Email = "Email",
+                ImageUrl = "ImageUrl",
+                DateCreated = DateTime.Today,
+            };
+
+            controller.Post(newUserProfile);
+
+            // Assert
+            Assert.Equal(userProfileCount + 1, repo.InternalData.Count);
+        }
+
         private List<UserProfile> CreateTestUserProfiles(int count)
         {
             var userProfiles = new List<UserProfile>();
