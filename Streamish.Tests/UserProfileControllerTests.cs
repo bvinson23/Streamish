@@ -155,6 +155,25 @@ namespace Streamish.Tests
             Assert.Equal(userProfileToUpdate.DateCreated, userProfileFromDb.DateCreated);
         }
 
+        [Fact]
+        public void Delete_Method_Removes_A_UserProfile()
+        {
+            // Arrange
+            var testUserProfileId = 99;
+            var userProfiles = CreateTestUserProfiles(5);
+            userProfiles[0].Id = testUserProfileId; // Make sure we know the Id of one of the userProfiles
+
+            var repo = new InMemoryUserProfileRepository(userProfiles);
+            var controller = new UserProfileController(repo);
+
+            // Act
+            controller.Delete(testUserProfileId);
+
+            // Assert
+            var userProfileFromDb = repo.InternalData.FirstOrDefault(p => p.Id == testUserProfileId);
+            Assert.Null(userProfileFromDb);
+        }
+
         private List<UserProfile> CreateTestUserProfiles(int count)
         {
             var userProfiles = new List<UserProfile>();
