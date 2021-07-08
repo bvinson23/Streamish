@@ -94,6 +94,34 @@ namespace Streamish.Tests
             Assert.Equal(userProfileCount + 1, repo.InternalData.Count);
         }
 
+        [Fact]
+        public void Put_Method_Returns_BadRequest_When_Ids_Do_Not_Match()
+        {
+            // Arrange
+            var testUserProfileId = 99;
+            var userProfiles = CreateTestUserProfiles(5);
+            userProfiles[0].Id = testUserProfileId; // Make sure we know the Id of one of the userProfiles
+
+            var repo = new InMemoryUserProfileRepository(userProfiles);
+            var controller = new UserProfileController(repo);
+
+            var userProfileToUpdate = new UserProfile()
+            {
+                Id = testUserProfileId,
+                Name = "Updated!",
+                Email = "Updated!",
+                ImageUrl = "ImageUrl",
+                DateCreated = DateTime.Today,
+            };
+            var someOtherUserProfileId = testUserProfileId + 1; // make sure they aren't the same
+
+            // Act
+            var result = controller.Put(someOtherUserProfileId, userProfileToUpdate);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
+        }
+
         private List<UserProfile> CreateTestUserProfiles(int count)
         {
             var userProfiles = new List<UserProfile>();
