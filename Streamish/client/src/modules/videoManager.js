@@ -3,7 +3,7 @@ const baseUrl = '/api/video';
 // This is the benefit of adding the proxy attribute in our package.json file.
 
 export const getAllVideos = () => {
-  return fetch(baseUrl)
+  return fetch(baseUrl + "/GetWithComments")
     .then((res) => res.json())
 };
 
@@ -15,4 +15,9 @@ export const addVideo = (video) => {
     },
     body: JSON.stringify(video),
   });
+};
+
+export const searchVideos = () => {
+    return fetch(baseUrl + "/search")
+    .then((res) => res.json())
 };
