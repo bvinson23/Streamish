@@ -7,30 +7,23 @@ const VideoList = () => {
     const [search, setSearch] = useState("");
 
     const getVideos = () => {
-        getAllVideos().then(videos => setVideos(videos));
+        if (search == "") {
+            getAllVideos().then(videos => setVideos(videos));
+        } else {
+            searchVideos(search).then(videos => setVideos(videos));
+        };
     };
 
     const handleSearch = (evt) => {
         evt.preventDefault()
         let searchInput = evt.target.value
-
-        if (searchInput.length > 0) {
-            let searchMatch = videos.filter(videos => {
-                if (videos.title.toLowerCase().includes(searchInput.toLowerCase())) {
-                    return true
-                }
-            })
-            setVideos(searchMatch)
-        }
-        else {
-            getVideos()
-        }
+        setSearch(searchInput)
     }
 
 
     useEffect(() => {
         getVideos();
-    }, []);
+    }, [search]);
 
     useEffect(() => {
         searchVideos();
