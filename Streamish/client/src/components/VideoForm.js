@@ -20,12 +20,6 @@ const VideoForm = () => {
     const handleClickSaveVideo = (evt) => {
         evt.preventDefault()
 
-        const title = video.title
-        const description = video.description
-        const url = video.url
-        const dateCreated = video.dateCreated
-        const userProfileId = video.userProfileId
-
         addVideo(video)
             .then(() => history.push("/"))
     };
@@ -34,8 +28,54 @@ const VideoForm = () => {
         <form className="videoForm">
             <h2 className="videoForm__title">Add a Video</h2>
             <fieldset>
-                
+                <div>
+                    <input 
+                        type="text"
+                        onChange={handleFieldChange}
+                        className="form-control"
+                        value={video.title} />
+                </div>
             </fieldset>
+            <fieldset>
+                <div>
+                    <input 
+                        type="text"
+                        onChange={handleFieldChange}
+                        className="form-control"
+                        value={video.description} />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <input 
+                        type="text"
+                        onChange={handleFieldChange}
+                        className="form-control"
+                        value={video.url} />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <input 
+                        type="hidden"
+                        onChange={handleFieldChange}
+                        className="form-control"
+                        value={video.dateCreated} />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <input 
+                        type="hidden"
+                        onChange={handleFieldChange}
+                        className="form-control"
+                        value={video.userProfileId} />
+                </div>
+            </fieldset>
+            <button className="btn-primary"
+                    onClick={handleClickSaveVideo}>Save Video</button>
         </form>
     )
 }
+
+export default VideoForm;
