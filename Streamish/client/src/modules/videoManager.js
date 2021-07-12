@@ -9,6 +9,11 @@ export const getAllVideos = () => {
     .then((res) => res.json())
 };
 
+// Function that gets one video by the id
+export const getVideo = (id) => {
+  return fetch(`${baseUrl}/GetVideoWithComments/${id}`).then((res) => res.json());
+}
+
 // Function that adds a new video by doing a POST fetch call to the database
 export const addVideo = (video) => {
   return fetch(baseUrl, {
