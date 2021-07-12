@@ -24,7 +24,7 @@ namespace Streamish.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var video = _videoRepository.GetByIdWithComments(id);
+            var video = _videoRepository.GetById(id);
             if (video == null)
             {
                 return NotFound();

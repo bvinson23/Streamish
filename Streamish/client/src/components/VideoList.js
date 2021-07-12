@@ -7,7 +7,7 @@ const VideoList = () => {
     const [search, setSearch] = useState("");
 
     const getVideos = () => {
-        if (search == "") {
+        if (search === "") {
             getAllVideos().then(videos => setVideos(videos));
         } else {
             searchVideos(search).then(videos => setVideos(videos));

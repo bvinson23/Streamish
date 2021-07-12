@@ -1,4 +1,5 @@
 const baseUrl = '/api/video';
+const userUrl = '/api/userprofile';
 // This is a relative url -- it doesn't look anything like https://localhost:5001/api/video.
 // This is the benefit of adding the proxy attribute in our package.json file.
 
@@ -12,6 +13,10 @@ export const getAllVideos = () => {
 // Function that gets one video by the id
 export const getVideo = (id) => {
   return fetch(`${baseUrl}/GetVideoWithComments/${id}`).then((res) => res.json());
+}
+
+export const getVideosByUser = (userId) => {
+  return fetch(`${userUrl}/GetVideosByUser/${userId}`).then((res) => res.json());
 }
 
 // Function that adds a new video by doing a POST fetch call to the database
