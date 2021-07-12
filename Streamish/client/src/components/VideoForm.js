@@ -1,95 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { addVideo, getAllVideos } from "../modules/videoManager";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { addVideo } from "../modules/videoManager";
 
-const VideoForm = ({getVideos}) => {
-    const [video, setVideo] = useState({
-        title: "",
-        description: "",
-        url: ""
-    });
+const VideoForm = ({ getVideos }) => {
+    const emptyVideo = {
+        title: '',
+        description: '',
+        url: ''
+    };
+
+    const [video, setVideo] = useState(emptyVideo);
 
     const history = useHistory();
 
-    const handleFieldChange = (evt) => {
-        const newVideo = { ...video }
-        let selectedVal = evt.target.value
-        if (evt.target.id.includes("Id")) {
-            selectedVal = parseInt(selectedVal)
-        }
-        newVideo[evt.target.id] = selectedVal
-        setVideo(newVideo)
+    const handleInputChange = (evt) => {
+        const value = evt.target.value;
+        const key = evt.target.id;
+
+        const videoCopy = { ...video };
+
+        videoCopy[key] = value;
+        setVideo(videoCopy);
     };
 
-    const handleClickSaveVideo = (evt) => {
-        evt.preventDefault()
+    const handleSave = (evt) => {
+        evt.preventDefault();
 
-        addVideo(video)
-            .then(() => setVideo({
-                title: "",
-                description: "",
-                url: ""
-            })).then(() => getVideos())
+        addVideo(video).then((p) => {
+            // Navigate the user back to the home route
+            history.push("/")
+        });
     };
 
     return (
-        <form className="videoForm">
-            <h2 className="videoForm__title">Add a Video</h2>
-            <fieldset>
-                <div>
-                    <input
-                        type="text"
-                        id="title"
-                        onChange={handleFieldChange}
-                        className="form-control"
-                        placeholder="Title"
-                        value={video.title} />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div>
-                    <input
-                        type="text"
-                        id="description"
-                        onChange={handleFieldChange}
-                        className="form-control"
-                        placeholder="Description"
-                        value={video.description} />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div>
-                    <input
-                        type="text"
-                        id="url"
-                        onChange={handleFieldChange}
-                        className="form-control"
-                        placeholder="Url"
-                        value={video.url} />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div>
-                    <input
-                        type="hidden"
-                        onChange={handleFieldChange}
-                        className="form-control"
-                        value={video.dateCreated} />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div>
-                    <input
-                        type="hidden"
-                        onChange={handleFieldChange}
-                        className="form-control"
-                        value={video.userProfileId} />
-                </div>
-            </fieldset>
-            <button className="btn-primary"
-                onClick={handleClickSaveVideo}>Save Video</button>
-        </form>
-    )
-}
+        <Form>
+            <FormGroup>
+                <Label for="title">Title</Label>
+                <Input type="text" name="title" id="title" placeholder="video title"
+                    value={video.title}
+                    onChange={handleInputChange} />
+            </FormGroup>
+            <FormGroup>
+                <Label for="url">URL</Label>
+                <Input type="text" name="url" id="url" placeholder="video link"
+                    value={video.url}
+                    onChange={handleInputChange} />
+            </FormGroup>
+            <FormGroup>
+                <Label for="description">Description</Label>
+                <Input type="textarea" name="description" id="description"
+                    value={video.description}
+                    onChange={handleInputChange} />
+            </FormGroup>
+            <Button className="btn btn-primary" onClick={handleSave}>Submit</Button>
+        </Form>
+    );
+};
 
 export default VideoForm;
