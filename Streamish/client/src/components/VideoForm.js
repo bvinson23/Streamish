@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { addVideo, getAllVideos } from "../modules/videoManager";
 
-const VideoForm = () => {
-    const [video, setVideo] = useState({});
+const VideoForm = ({getVideos}) => {
+    const [video, setVideo] = useState({
+        title: "",
+        description: "",
+        url: ""
+    });
 
     const history = useHistory();
 
@@ -21,7 +25,11 @@ const VideoForm = () => {
         evt.preventDefault()
 
         addVideo(video)
-            .then(() => history.push("/"))
+            .then(() => setVideo({
+                title: "",
+                description: "",
+                url: ""
+            })).then(() => getVideos())
     };
 
     return (
@@ -29,34 +37,40 @@ const VideoForm = () => {
             <h2 className="videoForm__title">Add a Video</h2>
             <fieldset>
                 <div>
-                    <input 
+                    <input
                         type="text"
+                        id="title"
                         onChange={handleFieldChange}
                         className="form-control"
+                        placeholder="Title"
                         value={video.title} />
                 </div>
             </fieldset>
             <fieldset>
                 <div>
-                    <input 
+                    <input
                         type="text"
+                        id="description"
                         onChange={handleFieldChange}
                         className="form-control"
+                        placeholder="Description"
                         value={video.description} />
                 </div>
             </fieldset>
             <fieldset>
                 <div>
-                    <input 
+                    <input
                         type="text"
+                        id="url"
                         onChange={handleFieldChange}
                         className="form-control"
+                        placeholder="Url"
                         value={video.url} />
                 </div>
             </fieldset>
             <fieldset>
                 <div>
-                    <input 
+                    <input
                         type="hidden"
                         onChange={handleFieldChange}
                         className="form-control"
@@ -65,7 +79,7 @@ const VideoForm = () => {
             </fieldset>
             <fieldset>
                 <div>
-                    <input 
+                    <input
                         type="hidden"
                         onChange={handleFieldChange}
                         className="form-control"
@@ -73,7 +87,7 @@ const VideoForm = () => {
                 </div>
             </fieldset>
             <button className="btn-primary"
-                    onClick={handleClickSaveVideo}>Save Video</button>
+                onClick={handleClickSaveVideo}>Save Video</button>
         </form>
     )
 }

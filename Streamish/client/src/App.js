@@ -1,12 +1,10 @@
 import React from "react";
 import "./App.css";
-import VideoForm from "./components/VideoForm";
 import VideoList from "./components/VideoList";
 
 function App() {
   return (
     <div className="App">
-      <VideoForm />
       <VideoList />
     </div>
   );
