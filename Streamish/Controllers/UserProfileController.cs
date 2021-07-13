@@ -39,9 +39,9 @@ namespace Streamish.Controllers
         }
 
         [HttpGet("{firebaseUserId}")]
-        public IActionResult GetByFirebaseUserId(int fireBaseUserId)
+        public IActionResult GetByFirebaseUserId(string fireBaseUserId)
         {
-            var userProfile = _userProfileRepository.GetByFireBaseUserId(fireBaseUserId);
+            var userProfile = _userProfileRepository.GetByFirebaseUserId(fireBaseUserId);
             if (userProfile == null)
             {
                 return NotFound();

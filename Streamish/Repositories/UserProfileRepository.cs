@@ -225,7 +225,7 @@ namespace Streamish.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SEELCT up.Id, up.FirebaseUserId, up.Name AS UserProfileName, up.Email, up.DateCreated, up.ImageUrl
+                        SELECT up.Id, up.FirebaseUserId, up.Name AS UserProfileName, up.Email, up.DateCreated, up.ImageUrl
                         FROM UserProfile up
                         WHERE FirebaseUserId = @FirebaseUserId";
 
