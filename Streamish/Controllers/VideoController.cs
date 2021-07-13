@@ -59,16 +59,24 @@ namespace Streamish.Controllers
                 //  https://www.youtube.com/embed/sstOXCQ-EG0
 
                 // If this isn't a YouTube video, we should just give up
-                if (!video.Url.Contains("youtube"))
+                if (video.Url.Contains("youtube"))
                 {
+                    if (!video.Url.Contains("embed"))
+                    {
+                        var videoCode = video.Url.Split("v=")[1].Split("&")[0];
+                        video.Url = $"https://www.youtube.com/embed/{videoCode}";
+                    }
                     return BadRequest();
                 }
 
-                // If it's not already an embeddable URL, we have some work to do
-                if (!video.Url.Contains("embed"))
+                if (video.Url.Contains("vineo"))
                 {
-                    var videoCode = video.Url.Split("v=")[1].Split("&")[0];
-                    video.Url = $"https://www.youtube.com/embed/{videoCode}";
+                    var videoCode = video.Url.Split(".com/")[1];
+                    video.Url = $"https://www.player.vimeo.com/video/{videoCode}";
+                }
+                else
+                {
+                    return BadRequest();
                 }
             }
             catch // Something went wrong while creating the embeddable url
